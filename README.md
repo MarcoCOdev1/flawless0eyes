@@ -7,7 +7,7 @@ Markdown/JSON report per run.
 
 ## Install
 
-**Via pipx (recommended — installs a `osint-agent` command, no source checkout needed):**
+**Via pipx (recommended — installs a `flawless0eyes` command, no source checkout needed):**
 
 ```bash
 pipx install git+https://github.com/YOUR_USERNAME/osint-agent.git
@@ -17,21 +17,21 @@ osint-agent --help
 **Via pip, in a virtualenv:**
 
 ```bash
-pip install git+https://github.com/YOUR_USERNAME/osint-agent.git
+pip install git+https://github.com/MarcoCOdev1/flawless0eyes.git
 ```
 
 **From source, for development:**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/osint-agent.git
-cd osint-agent
+git clone https://github.com/MarcoCOdev1/flawless0eyes.git
+cd flawless0eyes
 python3 -m venv venv && source venv/bin/activate
 pip install -e .
 ```
 
 Once installed via pipx/pip, no source directory is needed to run it — same
 model as tools like Sherlock. Copy `.env.example` to `.env` in whatever
-directory you run `osint-agent` from if you want to add API keys (optional,
+directory you run `flawless0eyes` from if you want to add API keys (optional,
 see below).
 
 ## Modules
