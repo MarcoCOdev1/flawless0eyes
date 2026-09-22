@@ -10,7 +10,7 @@ Markdown/JSON report per run.
 **Via pipx (recommended — installs a `flawless0eyes` command, no source checkout needed):**
 
 ```bash
-pipx install git+https://github.com/YOUR_USERNAME/osint-agent.git
+pipx install git+https://github.com/MarcoCOdev1/flawless0eyes.git
 osint-agent --help
 ```
 
