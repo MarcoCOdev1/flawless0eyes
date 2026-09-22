@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSINT Agent — Professional Open-Source Intelligence Platform</title>
+  <meta name="description"
+    content="OSINT Agent is a modular open-source intelligence platform for investigative research: domain recon, username footprinting, breach exposure, entity search, and document metadata forensics.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="http://localhost:5000/">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+
+<body>
+
+  <!-- ── Navigation ─────────────────────────────────────────────────────────── -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav-logo" aria-label="OSINT Agent home">
+      <div class="nav-logo-icon" aria-hidden="true">🔎</div>
+      <span class="gradient-text">OSINT Agent</span>
+    </a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#modules">Modules</a></li>
+    </ul>
+
+    <div class="nav-cta">
+      <a href="/login" class="btn btn-ghost btn-sm" id="nav-login-btn">Sign In</a>
+      <a href="/login?tab=register" class="btn btn-primary btn-sm" id="nav-register-btn">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge" role="status">
+        <span class="hero-badge-dot" aria-hidden="true"></span>
+        Open-Source Intelligence Platform
+      </div>
+
+      <h1 id="hero-heading" class="hero-title">
+        Investigate Anything.<br>
+        <span class="gradient-text">Find Everything.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        A modular OSINT platform for investigative research — domain recon, username
+        footprinting, breach detection, entity search, and document forensics —
+        all secured behind your private dashboard.
+      </p>
+
+      <div class="hero-cta">
+        <a href="/login?tab=register" class="btn btn-primary btn-lg" id="hero-start-btn">
+          🚀 Start Investigating
+        </a>
+        <a href="#features" class="btn btn-ghost btn-lg" id="hero-features-btn">
+          Explore Modules
+        </a>
+      </div>
+
+      <div class="typewriter-wrapper" aria-label="Example command" role="region">
+        <span class="typewriter-prompt" aria-hidden="true">$</span>
+        <span id="typewriter-text" aria-live="polite"></span>
+        <span class="typewriter-cursor" aria-hidden="true"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Stats ──────────────────────────────────────────────────────────────── -->
+  <section class="stats-section" aria-label="Platform statistics">
+    <div class="stats-grid">
+      <div class="stat-item animate-on-scroll">
+        <div class="stat-number gradient-text" data-count="58" data-suffix="+">58+</div>
+        <div class="stat-label">Platforms Checked</div>
+      </div>
+      <div class="stat-item animate-on-scroll">
+        <div class="stat-number gradient-text" data-count="24" data-suffix="">24</div>
+        <div class="stat-label">Entity Dork Queries</div>
+      </div>
+      <div class="stat-item animate-on-scroll">
+        <div class="stat-number gradient-text" data-count="7" data-suffix="">7</div>
+        <div class="stat-label">OSINT Modules</div>
+      </div>
+      <div class="stat-item animate-on-scroll">
+        <div class="stat-number gradient-text" data-count="100" data-suffix="%">100%</div>
+        <div class="stat-label">Passive Sources</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ───────────────────────────────────────────────────────────── -->
+  <section id="features" class="features-section" aria-labelledby="features-heading">
+    <div class="section-header">
+      <div class="section-tag">Modules</div>
+      <h2 id="features-heading" class="section-title">Everything you need for <span class="gradient-text">deep
+          investigation</span></h2>
+      <p class="section-desc">Seven purpose-built modules covering every aspect of open-source intelligence gathering.
+      </p>
+    </div>
+
+    <div class="features-grid" id="modules">
+
+      <article class="feature-card animate-on-scroll">
+        <div class="feature-icon feature-icon-cyan" aria-hidden="true">🌐</div>
+        <h3 class="feature-title">Domain Recon</h3>
+        <p class="feature-desc">Full WHOIS lookup, DNS record enumeration (A, MX, NS, TXT, SOA), and passive subdomain
+          discovery via Certificate Transparency logs (crt.sh).</p>
+        <div class="feature-tags">
+          <span class="feature-tag">WHOIS</span>
+          <span class="feature-tag">DNS</span>
+          <span class="feature-tag">Subdomains</span>
+          <span class="feature-tag">crt.sh</span>
+        </div>
+      </article>
+
+      <article class="feature-card animate-on-scroll">
+        <div class="feature-icon feature-icon-purple" aria-hidden="true">👤</div>
+        <h3 class="feature-title">Username Footprint</h3>
+        <p class="feature-desc">Check handle existence across 58+ platforms — dev, social, forums, gaming, creative,
+          professional — with concurrent checking for speed.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">GitHub</span>
+          <span class="feature-tag">Twitter/X</span>
+          <span class="feature-tag">Reddit</span>
+          <span class="feature-tag">+55 more</span>
+        </div>
+      </article>
+
+      <article class="feature-card animate-on-scroll">
+        <div class="feature-icon feature-icon-red" aria-hidden="true">🔓</div>
+        <h3 class="feature-title">Breach Detection</h3>
+        <p class="feature-desc">Check email addresses against Have I Been Pwned to identify breach exposure and
+          compromised credential databases.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">HIBP API</span>
+          <span class="feature-tag">Breach Data</span>
+          <span class="feature-tag">Email</span>
+        </div>
+      </article>
+
+      <article class="feature-card animate-on-scroll">
+        <div class="feature-icon feature-icon-green" aria-hidden="true">🔍</div>
+        <h3 class="feature-title">Web Search</h3>
+        <p class="feature-desc">Intelligent search via Google CSE, Bing, or DuckDuckGo fallback. All backends support
+          advanced operators including site:, filetype:, and intext:.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">Google CSE</span>
+          <span class="feature-tag">Bing</span>
+          <span class="feature-tag">DuckDuckGo</span>
+        </div>
+      </article>
+
+      <article class="feature-card animate-on-scroll">
+        <div class="feature-icon feature-icon-orange" aria-hidden="true">🏢</div>
+        <h3 class="feature-title">Entity Intelligence</h3>
+        <p class="feature-desc">Runs 24 automated Google-dork queries for any name or organization: news, court filings,
+          SEC records, leaked documents, and per-platform mentions.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">24 Dorks</span>
+          <span class="feature-tag">Court Records</span>
+          <span class="feature-tag">SEC Filings</span>
+          <span class="feature-tag">Leaks</span>
+        </div>
+      </article>
+
+      <article class="feature-card animate-on-scroll">
+        <div class="feature-icon feature-icon-yellow" aria-hidden="true">📄</div>
+        <h3 class="feature-title">Document Forensics</h3>
+        <p class="feature-desc">Extract embedded metadata from PDFs and images: author, software, creation dates, GPS
+          EXIF coordinates, and embedded links from any URL or local file.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">PDF</span>
+          <span class="feature-tag">EXIF</span>
+          <span class="feature-tag">GPS</span>
+          <span class="feature-tag">Author</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── Security Section ───────────────────────────────────────────────────── -->
+  <section id="security" class="security-section" aria-labelledby="security-heading">
+    <div class="security-inner">
+      <div class="security-text">
+        <div class="section-tag">Security First</div>
+        <h2 id="security-heading">Built for <span class="gradient-text">privacy & security</span></h2>
+        <p style="margin:16px 0 8px;">Every layer hardened — from API key isolation to XSS prevention. Your
+          investigation data never leaves your server.</p>
+
+        <ul class="security-list" role="list">
+          <li class="security-item">
+            <span class="security-item-icon" aria-hidden="true">🔑</span>
+            <div>
+              <div class="security-item-title">API Keys Never Leave the Server</div>
+              <div class="security-item-desc">All OSINT API keys are loaded server-side from .env — never sent to the
+                browser or logged.</div>
+            </div>
+          </li>
+          <li class="security-item">
+            <span class="security-item-icon" aria-hidden="true">🍪</span>
+            <div>
+              <div class="security-item-title">httpOnly JWT Cookies</div>
+              <div class="security-item-desc">Auth tokens stored in httpOnly, SameSite=Strict cookies — immune to XSS
+                token theft.</div>
+            </div>
+          </li>
+          <li class="security-item">
+            <span class="security-item-icon" aria-hidden="true">⚡</span>
+            <div>
+              <div class="security-item-title">Rate Limiting + Account Lockout</div>
+              <div class="security-item-desc">5 auth attempts/min, 10 scans/hour per user, 15-minute lockout after 5
+                failed logins.</div>
+            </div>
+          </li>
+          <li class="security-item">
+            <span class="security-item-icon" aria-hidden="true">🛡️</span>
+            <div>
+              <div class="security-item-title">Injection & XSS Protection</div>
+              <div class="security-item-desc">Strict regex validation, SQLAlchemy ORM, CSP headers, and XSS-safe DOM
+                rendering.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="security-visual" aria-hidden="true">
+        <div class="security-code-block">
+          <div><span class="code-comment"># All API keys — server-side only</span></div>
+          <div><span class="code-key">HIBP_API_KEY</span> = <span class="code-string">os.getenv("HIBP_API_KEY")</span>
+          </div>
+          <div><span class="code-key">GOOGLE_CSE_API_KEY</span> = <span
+              class="code-string">os.getenv("GOOGLE_CSE_API_KEY")</span></div>
+          <div style="margin-top:12px;"><span class="code-comment"># JWT stored in httpOnly cookies</span></div>
+          <div><span class="code-key">JWT_TOKEN_LOCATION</span> = <span class="code-value">["cookies"]</span></div>
+          <div><span class="code-key">JWT_COOKIE_SAMESITE</span> = <span class="code-string">"Strict"</span></div>
+          <div style="margin-top:12px;"><span class="code-comment"># Rate limiting per IP</span></div>
+          <div><span class="code-key">@limiter.limit</span>(<span class="code-string">"5 per minute"</span>)</div>
+          <div><span class="code-key">def</span> <span class="code-value">login</span>(): ...</div>
+          <div style="margin-top:12px;"><span class="code-comment"># Strict input sanitization</span></div>
+          <div><span class="code-key">pattern</span> = <span
+              class="code-string">r"^[a-zA-Z0-9][a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}$"</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────────────────────── -->
+  <section class="cta-section" aria-labelledby="cta-heading">
+    <div class="cta-glow" aria-hidden="true"></div>
+    <h2 id="cta-heading">Ready to start <span class="gradient-text">your investigation?</span></h2>
+    <p>Create a free account and run your first scan in under a minute.</p>
+    <div class="hero-cta">
+      <a href="/login?tab=register" class="btn btn-primary btn-lg" id="cta-register-btn">
+        🚀 Create Free Account
+      </a>
+      <a href="/login" class="btn btn-ghost btn-lg" id="cta-login-btn">Sign In</a>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-logo gradient-text">🔎 OSINT Agent</div>
+    <div class="footer-note">Built for investigative research. Use responsibly. Respect platform ToS and applicable law.
+    </div>
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="https://haveibeenpwned.com/API/Key" target="_blank" rel="noopener noreferrer">HIBP API</a>
+      <a href="https://programmablesearchengine.google.com/" target="_blank" rel="noopener noreferrer">Google CSE</a>
+      <a href="https://crt.sh/" target="_blank" rel="noopener noreferrer">crt.sh</a>
+    </nav>
+  </footer>
+
+  <div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/landing.js"></script>
+</body>
+
+</html>

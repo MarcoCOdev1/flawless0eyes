@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report — OSINT Agent</title>
+  <meta name="description" content="View OSINT scan report details.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <style>
+    /* ── Report-specific styles ─────────────────────────────────────── */
+    .report-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .report-topbar {
+      padding: 16px 36px;
+      border-bottom: 1px solid var(--color-border);
+      background: rgba(13, 14, 20, 0.8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      flex-wrap: wrap;
+    }
+
+    .report-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .report-back-btn {
+      font-size: 13px;
+    }
+
+    .report-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .report-meta-item {
+      font-size: 12px;
+      color: var(--color-text-muted);
+    }
+
+    .report-meta-item strong {
+      color: var(--color-text-secondary);
+      font-weight: 600;
+    }
+
+    .report-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .report-body {
+      flex: 1;
+      padding: 36px;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .report-header-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .report-header-module {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent-purple);
+      margin-bottom: 8px;
+    }
+
+    .report-header-target {
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 800;
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+    }
+
+    .report-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .report-section-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .report-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .report-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 4px;
+    }
+
+    /* Info Grid */
+    .info-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      min-width: 140px;
+      flex-shrink: 0;
+    }
+
+    .info-value {
+      font-size: 13px;
+      color: var(--color-text-primary);
+      word-break: break-all;
+    }
+
+    /* DNS Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .data-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      font-size: 13px;
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .dns-type {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-accent-cyan);
+    }
+
+    .dns-value {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-text-secondary);
+    }
+
+    /* Subdomain chips */
+    .chip-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+
+    .subdomain-chip {
+      padding: 4px 10px;
+      font-size: 12px;
+      background: rgba(0, 212, 255, 0.07);
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: var(--radius-full);
+      color: var(--color-accent-cyan);
+      transition: var(--transition-fast);
+    }
+
+    .subdomain-chip:hover {
+      background: rgba(0, 212, 255, 0.15);
+    }
+
+    /* Username grid */
+    .username-summary {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .stat-chip {
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stat-found {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--color-accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .stat-notfound {
+      background: rgba(75, 85, 99, 0.15);
+      color: var(--color-text-muted);
+      border: 1px solid rgba(75, 85, 99, 0.25);
+    }
+
+    .stat-error {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--color-accent-yellow);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 8px;
+    }
+
+    .platform-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      text-decoration: none;
+      transition: var(--transition-fast);
+    }
+
+    .platform-item:hover {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.3);
+      transform: none;
+    }
+
+    .platform-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .platform-url {
+      font-size: 11px;
+      color: var(--color-text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Breach */
+    .breach-safe-banner,
+    .breach-warn-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .breach-safe-banner {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: var(--color-accent-green);
+    }
+
+    .breach-warn-banner {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: var(--color-accent-red);
+    }
+
+    .breach-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .breach-item {
+      padding: 14px;
+      background: rgba(239, 68, 68, 0.04);
+      border: 1px solid rgba(239, 68, 68, 0.12);
+      border-radius: var(--radius-md);
+    }
+
+    .breach-item-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .breach-name {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .breach-date {
+      font-size: 12px;
+      color: var(--color-text-muted);
+    }
+
+    .breach-classes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .breach-class-chip {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+
+    /* Search results */
+    .search-meta {
+      margin-bottom: 4px;
+    }
+
+    .search-backend-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      background: rgba(124, 58, 237, 0.1);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+      border-radius: var(--radius-full);
+      color: #a78bfa;
+    }
+
+    .search-results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .search-result-item {
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: var(--transition-fast);
+    }
+
+    .search-result-item:hover {
+      border-color: var(--color-border-accent);
+    }
+
+    .search-result-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .search-result-url {
+      font-size: 12px;
+      color: var(--color-accent-cyan);
+      display: block;
+      margin-bottom: 6px;
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .search-result-url:hover {
+      text-decoration: underline;
+    }
+
+    .search-result-snippet {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Section states */
+    .section-empty,
+    .section-error {
+      padding: 20px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .section-empty {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--color-text-muted);
+    }
+
+    .section-error {
+      background: rgba(245, 158, 11, 0.05);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      color: var(--color-accent-yellow);
+    }
+
+    /* Loading / error states */
+    .report-loading-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 80px 20px;
+      color: var(--color-text-muted);
+    }
+
+    .report-error-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 80px 20px;
+    }
+
+    @media (max-width: 768px) {
+      .report-body {
+        padding: 20px 16px;
+      }
+
+      .report-topbar {
+        padding: 12px 16px;
+      }
+
+      .platform-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .report-header-card {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="report-page">
+
+    <!-- ── Top Bar ─────────────────────────────────────────────────────────── -->
+    <header class="report-topbar" role="banner">
+      <div class="report-topbar-left">
+        <a href="/dashboard" class="btn btn-ghost btn-sm report-back-btn" id="back-btn">← Dashboard</a>
+        <div class="report-meta" id="report-meta">
+          <span class="report-meta-item"><strong id="report-module">—</strong></span>
+          <span class="report-meta-item" aria-hidden="true">·</span>
+          <span class="report-meta-item" id="report-target"></span>
+          <span class="report-meta-item" aria-hidden="true">·</span>
+          <span class="report-meta-item" id="report-date"></span>
+          <span class="report-meta-item" aria-hidden="true">·</span>
+          <span class="report-meta-item text-muted" id="report-scan-id"></span>
+        </div>
+      </div>
+      <div class="report-actions">
+        <button class="btn btn-ghost btn-sm" id="download-md-btn" type="button" aria-label="Download Markdown report">📝
+          MD</button>
+        <button class="btn btn-ghost btn-sm" id="download-json-btn" type="button" aria-label="Download JSON report">📦
+          JSON</button>
+      </div>
+    </header>
+
+    <!-- ── Loading State ───────────────────────────────────────────────────── -->
+    <div id="report-loading" class="report-loading-state" role="status" aria-live="polite">
+      <div class="spinner spinner-lg" aria-hidden="true"></div>
+      <p>Loading report...</p>
+    </div>
+
+    <!-- ── Error State ─────────────────────────────────────────────────────── -->
+    <div id="report-error" class="report-error-state hidden" role="alert">
+      <span style="font-size:48px;" aria-hidden="true">⚠️</span>
+      <h2 style="font-size:20px;">Failed to load report</h2>
+      <p class="error-message text-secondary"></p>
+      <a href="/dashboard" class="btn btn-ghost" id="error-back-btn">← Back to Dashboard</a>
+    </div>
+
+    <!-- ── Report Content ──────────────────────────────────────────────────── -->
+    <div id="report-content" class="hidden">
+
+      <!-- Header Card -->
+      <div class="report-body">
+        <div class="report-header-card glass-card" aria-label="Scan summary">
+          <div>
+            <div class="report-header-module" aria-label="Module">
+              <span aria-hidden="true">🔎</span>
+              <span id="report-module-label"></span>
+            </div>
+            <div class="report-header-target" id="report-target-display" aria-label="Target"></div>
+          </div>
+          <div style="text-align:right; flex-shrink:0;">
+            <div class="badge badge-done" id="report-status-badge">✓ Complete</div>
+          </div>
+        </div>
+
+        <!-- Dynamic report sections rendered here by report.js -->
+        <div id="report-sections" aria-label="Report sections"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/report.js"></script>
+  <script>
+    // Sync secondary display elements once report.js sets the primary ones
+    const obs = new MutationObserver(() => {
+      const mod = document.getElementById('report-module')?.textContent;
+      const tgt = document.getElementById('report-target')?.textContent;
+      if (mod) {
+        const label = document.getElementById('report-module-label');
+        if (label) label.textContent = mod;
+      }
+      if (tgt) {
+        const disp = document.getElementById('report-target-display');
+        if (disp) disp.textContent = tgt;
+      }
+    });
+    const meta = document.getElementById('report-meta');
+    if (meta) obs.observe(meta, { childList: true, subtree: true, characterData: true });
+  </script>
+</body>
+
+</html>

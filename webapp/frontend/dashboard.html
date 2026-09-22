@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — OSINT Agent</title>
+  <meta name="description" content="OSINT Agent investigation dashboard — run scans and view your report history.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────────── -->
+  <aside class="sidebar" role="complementary" aria-label="Navigation sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo" aria-hidden="true">🔎</div>
+      <span class="sidebar-title gradient-text">OSINT Agent</span>
+    </div>
+
+    <nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+      <div class="sidebar-section-label">Investigate</div>
+
+      <button class="nav-item active" data-view="new-scan" id="nav-new-scan" aria-pressed="true">
+        <span class="nav-item-icon" aria-hidden="true">⚡</span>
+        New Scan
+      </button>
+
+      <button class="nav-item" data-view="history" id="nav-history" aria-pressed="false">
+        <span class="nav-item-icon" aria-hidden="true">📋</span>
+        History
+        <span class="nav-item-badge hidden" id="history-badge" aria-label="Scan count">0</span>
+      </button>
+
+      <div class="sidebar-section-label">Resources</div>
+
+      <a href="/" class="nav-item" id="nav-home">
+        <span class="nav-item-icon" aria-hidden="true">🏠</span>
+        Home
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="user-avatar" aria-hidden="true">?</div>
+        <span class="user-email" id="user-email" aria-label="Logged in as">Loading...</span>
+        <button class="sidebar-logout-btn" id="logout-btn" title="Sign out" aria-label="Sign out">⏻</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main Content ──────────────────────────────────────────────────────── -->
+  <main class="main-content" role="main">
+
+    <!-- ── New Scan View ──────────────────────────────────────────────────── -->
+    <div class="view-panel" data-view="new-scan">
+      <header class="content-header">
+        <h1>New Investigation</h1>
+        <p>Select a module, enter your target, and run the scan</p>
+      </header>
+
+      <div class="content-body">
+
+        <!-- Scan Panel -->
+        <section class="scan-panel" aria-label="Scan configuration">
+          <div class="scan-panel-header">
+            <span aria-hidden="true">🔍</span>
+            <h2>Configure Scan</h2>
+          </div>
+
+          <!-- Module Tabs -->
+          <div class="module-tabs" id="module-tabs" role="tablist" aria-label="Scan modules"></div>
+
+          <!-- Scan Form -->
+          <form class="scan-form" id="scan-form" novalidate aria-label="Scan form">
+
+            <div class="form-group">
+              <label class="form-label" for="scan-target">Target</label>
+              <div class="scan-target-input-wrap">
+                <input
+                  class="form-input"
+                  type="text"
+                  id="scan-target"
+                  name="target"
+                  placeholder="e.g. example.com"
+                  required
+                  maxlength="500"
+                  autocomplete="off"
+                  spellcheck="false"
+                  autocapitalize="off"
+                >
+                <span class="scan-target-hint" id="scan-target-hint" aria-hidden="true">domain</span>
+              </div>
+            </div>
+
+            <!-- Full Scan Extra Fields (hidden unless "full" module selected) -->
+            <div class="scan-extra-fields hidden" id="extra-fields">
+              <div class="form-group">
+                <label class="form-label" for="extra-username">Username (optional)</label>
+                <input class="form-input" type="text" id="extra-username" name="extra_username" placeholder="e.g. acme_corp" maxlength="100" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="extra-email">Email (optional)</label>
+                <input class="form-input" type="email" id="extra-email" name="extra_email" placeholder="press@acme.com" maxlength="320" autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="extra-entity">Entity Name (optional)</label>
+                <input class="form-input" type="text" id="extra-entity" name="extra_entity_name" placeholder="e.g. Acme Corp" maxlength="500" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="scan-actions" id="scan-actions">
+              <p class="scan-module-desc" aria-live="polite">
+                <span aria-hidden="true">ℹ️</span>
+                <span id="module-desc">Select a module above to begin</span>
+              </p>
+              <button type="submit" class="btn btn-primary" id="scan-submit-btn">
+                <span class="btn-text">🚀 Run Scan</span>
+                <span class="btn-spinner hidden" aria-hidden="true">
+                  <span class="spinner"></span>
+                </span>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Terminal Output (hidden until first scan) -->
+        <section class="terminal hidden" id="terminal-panel" aria-label="Scan terminal output" aria-live="polite">
+          <div class="terminal-header" aria-hidden="true">
+            <div class="terminal-dots">
+              <div class="terminal-dot"></div>
+              <div class="terminal-dot"></div>
+              <div class="terminal-dot"></div>
+            </div>
+            <span class="terminal-title" id="terminal-title">osint-agent</span>
+          </div>
+          <div class="terminal-body" id="terminal-body" role="log" aria-label="Scan output"></div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- ── History View ───────────────────────────────────────────────────── -->
+    <div class="view-panel hidden" data-view="history">
+      <header class="content-header">
+        <h1>Scan History</h1>
+        <p>All your past investigations and saved reports</p>
+      </header>
+
+      <div class="content-body">
+        <section class="history-panel" aria-label="Scan history">
+          <div class="history-header">
+            <h2>Reports</h2>
+            <button class="btn btn-ghost btn-sm" id="refresh-history-btn" type="button" aria-label="Refresh history">
+              🔄 Refresh
+            </button>
+          </div>
+
+          <div class="table-wrap" role="region" aria-label="Scan history table" tabindex="0">
+            <table class="history-table" aria-label="Scan history">
+              <thead>
+                <tr>
+                  <th scope="col">Module</th>
+                  <th scope="col">Target</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Started</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="history-tbody"></tbody>
+            </table>
+          </div>
+
+          <div id="history-empty" class="empty-state hidden" role="status">
+            <div class="empty-state-icon" aria-hidden="true">📭</div>
+            <div class="empty-state-title">No scans yet</div>
+            <div class="empty-state-desc">Run your first scan using the "New Scan" panel</div>
+          </div>
+
+          <nav class="pagination" id="pagination" aria-label="History pagination"></nav>
+        </section>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<script src="/js/api.js"></script>
+<script src="/js/dashboard.js"></script>
+<script>
+  // Wire up refresh button
+  document.getElementById('refresh-history-btn')?.addEventListener('click', () => {
+    // Trigger history reload — dashboard.js exposes loadHistory via closure
+    // Simple approach: re-click history nav
+    document.getElementById('nav-history')?.click();
+  });
+</script>
+</body>
+</html>

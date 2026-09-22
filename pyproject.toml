@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "osint-agent"
+version = "0.1.0"
+description = "A modular OSINT CLI for investigative research: domain recon, username footprinting, breach checks, dorked search, and document metadata forensics."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "Your Name", email = "you@example.com" }
+]
+keywords = ["osint", "investigative-journalism", "recon", "security", "search"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Intended Audience :: Other Audience",
+    "Topic :: Security",
+]
+
+dependencies = [
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "python-whois>=0.9.4",
+    "dnspython>=2.4.0",
+    "python-dotenv>=1.0.0",
+    "pypdf>=4.0.0",
+    "Pillow>=10.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/YOUR_USERNAME/osint-agent"
+Repository = "https://github.com/YOUR_USERNAME/osint-agent"
+Issues = "https://github.com/YOUR_USERNAME/osint-agent/issues"
+
+[project.scripts]
+osint-agent = "osint_agent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+osint_agent = ["wordlists/*.txt"]
